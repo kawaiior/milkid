@@ -1,0 +1,21 @@
+{
+  "name": "milkid",
+  "version": "2.0.5",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "bun build ./index.ts --outdir ./dist"
+  },
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "vitest": "^2.1.8",
+    "xxh3-ts": "^1.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2"
+  }
+}
