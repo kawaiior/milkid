@@ -76,6 +76,7 @@ The encoding table of Milkid consists of `0-9a-zA-Z`. Each segment of Milkid is 
 ## Options
 
 Option | Default Value | Description
+---|---|---
 `length` | `24` | The length of the generated ID.
 `timestamp` | `-` | Whether to use the timestamp as the beginning of the ID, which can effectively avoid fragmentation in the database.
 `hyphen` | `false` | Whether to use hyphens to separate the various parts of the ID.
