@@ -81,6 +81,7 @@ Milkid 的编码表由 `0-9a-zA-Z` 组成，Milkid 的每一段在常见的场�
 `timestamp` | `-` | 是否使用时间戳作为 ID 的开头，这能有效避免数据库出现碎片
 `hyphen` | `false` | 是否使用连字符分隔 ID 的各个部分
 `fingerprint` | `false` | 是否使用指纹作为 ID 的一部分，开启后生产 ID 时需要传递指纹
+`sequential` | `true` | 是否是顺序的，当同一个 JavaScript 进程生成的 ID 是有序的，每次都会在当前毫秒内加 1，这对数据库来说很重要
 
 ## 也可以看看
 
