@@ -23,9 +23,7 @@ export function defineIdGenerator(options: IdGeneratorOptions) {
 		1 -
 		(options.timestamp ? 7 : 0) -
 		(options.fingerprint ? 5 : 0);
-	let maxRandCharacter = "";
-	for (let i = 0; i < randLength; i++) maxRandCharacter += "z";
-	const maxRandDecimal = characterToDecimal(maxRandCharacter);
+	const maxRandDecimal = getMaxRandDecimal(randLength);
 
 	return {
 		createId(fingerprint?: string | Buffer) {
@@ -67,13 +65,12 @@ export function defineIdGenerator(options: IdGeneratorOptions) {
 						lastDecimal = lastDecimal + 1n;
 						decimal = lastDecimal;
 					}
-					console.log(lastTime !== now, decimal);
 				} else {
 					decimal = random(maxRandDecimal);
 				}
 				id += decimalToCharacter(decimal)
 					.padStart(randLength, "0")
-					.slice(1, randLength + 1);
+					.slice(1, randLength);
 			}
 
 			return id;
@@ -101,6 +98,15 @@ function characterToDecimal(character: string): bigint {
 	for (let i = 0; i < character.length; i++) {
 		const charIndex = ENCODING.indexOf(character[i]);
 		decimal = decimal * base + BigInt(charIndex);
+	}
+	return decimal;
+}
+
+function getMaxRandDecimal(length: number): bigint {
+	if (length <= 0) return 0n;
+	let decimal = 51n;
+	while (--length > 0) {
+		decimal = decimal * 62n + 61n;
 	}
 	return decimal;
 }
