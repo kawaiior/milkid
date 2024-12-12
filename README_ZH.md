@@ -85,6 +85,10 @@ console.log(idGenerator.createId(fingerprint));
 
 Milkid 的编码表由 `0-9a-zA-Z` 组成，Milkid 在常见的场景下都很安全，你甚至可以在 URL 或者 HTML 的 `class` 属性中使用（浏览器要求 `class` 必须以字母开头，Milkid 的第一个字符都一定会是一个字母）
 
+## 碰撞概率
+
+默认情况下，Milkid 生成的 ID 长度为 `24`，在开启时间戳功能的情况下，同一毫秒生成 243 万亿个 ID，才能有 1% 的概率发生至少一次碰撞。
+
 ## 选项
 
 选项 | 缺省值 | 说明
