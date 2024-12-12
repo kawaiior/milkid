@@ -41,7 +41,7 @@ export function defineIdGenerator(options: IdGeneratorOptions) {
 				);
 				if (id.length > 7) id = id.slice(-7);
 			}
-			if (fingerprint) {
+			if (options.fingerprint) {
 				if (options.hyphen) id += "-";
 				if (Buffer.isBuffer(fingerprint)) {
 					id += decimalToCharacter(
