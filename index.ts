@@ -5,7 +5,7 @@ const ENCODING_FIRST_CHAR =
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 let lastTime = 0;
-let lastCounter = 0n;
+let lastDecimal = 0n;
 
 export type IdGeneratorOptions = {
 	length?: number;
@@ -57,18 +57,23 @@ export function defineIdGenerator(options: IdGeneratorOptions) {
 			}
 			if (randLength > 1) {
 				if (options.hyphen) id += "-";
-				let decimal = random(maxRandDecimal);
+				let decimal: bigint;
 				if (options.sequential !== false) {
 					if (lastTime !== now) {
 						lastTime = now;
-						lastCounter = 0n;
+						decimal = random(maxRandDecimal);
+						lastDecimal = decimal;
 					} else {
-						decimal = decimal + lastCounter++;
+						lastDecimal = lastDecimal + 1n;
+						decimal = lastDecimal;
 					}
+					console.log(lastTime !== now, decimal);
+				} else {
+					decimal = random(maxRandDecimal);
 				}
-				id += decimalToCharacter(random(decimal))
+				id += decimalToCharacter(decimal)
 					.padStart(randLength, "0")
-					.slice(1, randLength);
+					.slice(1, randLength + 1);
 			}
 
 			return id;
@@ -80,7 +85,7 @@ function decimalToCharacter(decimal: bigint): string {
 	let result = "";
 	while (decimal > 0) {
 		if (decimal <= 62n) {
-			result = ENCODING_FIRST_CHAR[0] + result;
+			result = ENCODING_FIRST_CHAR[Number(decimal % 52n)] + result;
 			decimal = decimal / 52n;
 		} else {
 			result = ENCODING[Number(decimal % 62n)] + result;

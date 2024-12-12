@@ -39,6 +39,18 @@ const idGenerator = defineIdGenerator({
 console.log(idGenerator.createId()); // AWdM7nLAX5XA5DJAfRD8TjtY
 ```
 
+## 时间戳
+
+当我们生成的 ID 作为数据库主键使用时，我们的主键最好是递增的，如果我们使用 UUID 这种无序的 ID 生成器，就会导致我们数据库索引的叶子节点频繁分裂、合并。
+
+而将毫秒级的时间戳放置在 ID 的起始位置，自然就成了让我们的 ID 尽可能地有序的关键。同时，毫秒级的时间戳也可以有效避免 ID 出现碰撞的概率：只要在一毫秒内不生成两个相同的 ID，那么就不会有 ID 重复。
+
+我们可以通过设置选项中的 `timestamp` 为 `true` 来启用时间戳功能。
+
+## 单调自增
+
+尽管，我们没有办法使 ID 严格地像数据库主键一样严格保证插入顺序，但是我们可以做到很接近。通过开启时间戳功能，我们已经实现了同一毫秒内 ID 的顺序性，通过设置选项中的 `sequential` 为 `true`，我们可以让同一进程内同一毫秒生成的 ID 自动加 `1`，来尽可能地保证结果的顺序。
+
 ## 指纹
 
 UUID 和一些其他的 ID 生成算法令人讨厌的一点就是，需要使用者提供机器 ID。但对于现在的可以水平扩展的系统来说，所运行的机器数量是事先不确定的。
@@ -71,7 +83,7 @@ console.log(idGenerator.createId(fingerprint));
  Millisecond timestamp (7) | Fingerprint (5) | Random Bits (12)
 ```
 
-Milkid 的编码表由 `0-9a-zA-Z` 组成，Milkid 的每一段在常见的场景下都很安全，你甚至可以在 URL 或者 HTML 的 `class` 属性中使用（浏览器要求 `class` 必须以字母开头，Milkid 的每一段的第一个字符都一定会是一个字母）
+Milkid 的编码表由 `0-9a-zA-Z` 组成，Milkid 在常见的场景下都很安全，你甚至可以在 URL 或者 HTML 的 `class` 属性中使用（浏览器要求 `class` 必须以字母开头，Milkid 的第一个字符都一定会是一个字母）
 
 ## 选项
 
@@ -122,6 +134,10 @@ const idGenerator = defineIdGenerator({
     sequential: false,
 });
 ```
+
+## 其他语言
+
+[Python](https://github.com/kawaiior/milkid-for-python) - kawaiior
 
 ## 也可以看看
 

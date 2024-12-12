@@ -39,6 +39,18 @@ const idGenerator = defineIdGenerator({
 console.log(idGenerator.createId()); // AWdM7nLAX5XA5DJAfRD8TjtY
 ```
 
+## Timestamp
+
+When the IDs we generate are used as database primary keys, it's better that our primary keys are incremented. If we use an unordered ID generator like UUID, it will cause the leaf nodes of our database index to split and merge frequently.
+
+Placing the millisecond-level timestamp at the beginning of the ID naturally becomes the key to making our IDs as ordered as possible. Meanwhile, the millisecond-level timestamp can also effectively avoid the probability of ID collisions: as long as two identical IDs are not generated within one millisecond, there will be no ID duplication.
+
+We can enable the timestamp function by setting the `timestamp` option to `true`.
+
+## Monotonically Increasing
+
+Although we have no way to ensure that the insertion order of IDs is as strictly guaranteed as that of database primary keys, we can get very close. By enabling the timestamp function, we have already achieved the order of IDs within the same millisecond. By setting the `sequential` option to `true`, we can make the IDs generated within the same millisecond in the same process automatically increase by `1` to ensure the order of the results as much as possible. 
+
 ## Fingerprint
 
 One annoying thing about UUID and some other ID generation algorithms is that they require users to provide machine IDs. However, for horizontally scalable systems nowadays, the number of running machines is not determined in advance.
@@ -123,6 +135,9 @@ const idGenerator = defineIdGenerator({
 });
 ``` 
 
+## Other Languages
+
+[Python](https://github.com/kawaiior/milkid-for-python) - kawaiior
 
 ## See Also
 
